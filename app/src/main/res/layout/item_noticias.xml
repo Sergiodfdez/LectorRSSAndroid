@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/noticia_imageView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_launcher" />
+        <TextView
+            android:id="@+id/noticia_textview_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:textStyle="bold"
+            android:text="Titulo"
+            android:layout_alignTop="@+id/noticia_imageView"
+            android:layout_toRightOf="@+id/noticia_imageView"
+            android:layout_toEndOf="@+id/noticia_imageView" />
+        <TextView
+            android:id="@+id/noticia_textview_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="fecha"
+            android:layout_alignParentTop="true"/>
+        <TextView
+            android:id="@+id/noticia_textview_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Contenido"
+            android:layout_below="@+id/noticia_textview_title"
+            android:layout_toRightOf="@+id/noticia_imageView"
+            android:layout_toEndOf="@+id/noticia_imageView" />
+    </RelativeLayout>
+</LinearLayout>
