@@ -1,8 +1,7 @@
-package com.example.sergio.lectorrss.presenter;
+package com.example.sergio.lectorrss.android.presenter;
 
-import com.example.sergio.lectorrss.view.NoticiasView;
+import com.example.sergio.lectorrss.android.view.NoticiasView;
 
-import android.database.sqlite.SQLiteDatabase;
 /**
  * Created by sergio on 21/01/15.
  */

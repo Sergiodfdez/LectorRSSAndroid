@@ -1,4 +1,4 @@
-package com.example.sergio.lectorrss.model;
+package com.example.sergio.lectorrss.java.database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -8,7 +8,7 @@ import android.util.Log;
 /**
  * Created by sergio on 22/01/15.
  */
-public class NoticiasSQLHelperImpl extends SQLiteOpenHelper implements NoticiasSQLHelper{
+public class NoticiasSQLHelper extends SQLiteOpenHelper{
 
     public static final String TABLE_NOTICIAS = "noticias";
     public static final String COLUMN_ID = "_id";
@@ -23,7 +23,7 @@ public class NoticiasSQLHelperImpl extends SQLiteOpenHelper implements NoticiasS
             + " integer primary key autoincrement, " + COLUMN_NOTICIAS
             + " text not null);";
 
-    public NoticiasSQLHelperImpl(Context context) {
+    public NoticiasSQLHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -34,7 +34,7 @@ public class NoticiasSQLHelperImpl extends SQLiteOpenHelper implements NoticiasS
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.i(NoticiasSQLHelperImpl.class.getName(),
+        Log.i(NoticiasSQLHelper.class.getName(),
                 "Upgrading database from version " + oldVersion + " to "
                         + newVersion + ", which will destroy all old data");
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NOTICIAS);

@@ -1,4 +1,4 @@
-package com.example.sergio.lectorrss.presenter;
+package com.example.sergio.lectorrss.android.presenter;
 
 /**
  * Created by sergio on 21/01/15.

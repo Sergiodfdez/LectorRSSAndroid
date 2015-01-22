@@ -1,6 +1,6 @@
-package com.example.sergio.lectorrss.model;
+package com.example.sergio.lectorrss.java.database;
 
-import com.example.sergio.lectorrss.model.Noticia;
+import com.example.sergio.lectorrss.java.object.Noticia;
 
 import java.util.ArrayList;
 import java.util.Date;

@@ -1,16 +1,16 @@
-package com.example.sergio.lectorrss.activity;
+package com.example.sergio.lectorrss.android.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 
-import com.example.sergio.lectorrss.view.NoticiasView;
-import com.example.sergio.lectorrss.Noticias_Adapter;
+import com.example.sergio.lectorrss.android.view.NoticiasView;
+import com.example.sergio.lectorrss.model.Noticias_Adapter;
 import com.example.sergio.lectorrss.R;
-import com.example.sergio.lectorrss.model.NoticiasDataBase;
-import com.example.sergio.lectorrss.presenter.NoticiasPresenter;
-import com.example.sergio.lectorrss.presenter.NoticiasPresenterImpl;
+import com.example.sergio.lectorrss.java.database.NoticiasDataBase;
+import com.example.sergio.lectorrss.android.presenter.NoticiasPresenter;
+import com.example.sergio.lectorrss.android.presenter.NoticiasPresenterImpl;
 
 /**
  * Created by sergio on 21/01/15.

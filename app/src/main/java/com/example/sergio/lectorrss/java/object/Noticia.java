@@ -1,4 +1,4 @@
-package com.example.sergio.lectorrss.model;
+package com.example.sergio.lectorrss.java.object;
 
 import java.util.Date;
 
