@@ -6,9 +6,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.example.sergio.lectorrss.model.Noticia;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Objects;
 
 /**
  * Created by sergio on 21/01/15.
