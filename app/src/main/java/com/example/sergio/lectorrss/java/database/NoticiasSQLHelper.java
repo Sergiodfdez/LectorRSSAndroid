@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import java.sql.Date;
+import java.sql.SQLException;
 
 /**
  * Created by sergio on 22/01/15.
@@ -21,21 +22,23 @@ public class NoticiasSQLHelper extends SQLiteOpenHelper{
     public static final String COLUMN_FECHA = "fecha";
 
     private static final String DATABASE_NAME = "noticias.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     // Database creation sql statement
-    private static final String DATABASE_CREATE = "create table "
+    private static final String DATABASE_CREATE = "CREATE TABLE "
             + TABLE_NOTICIAS + "(" + COLUMN_ID
             + " integer primary key autoincrement, "
-            + COLUMN_TITULO+ " text not null,"
-            + COLUMN_CONTENIDO+ " text not null,"
-            + COLUMN_ENLACE+ " text not null,"
-            + COLUMN_IMAGEN+ " text not null,"
-            + COLUMN_FECHA+ " text not null,"
+            + COLUMN_TITULO+ " varchar(255),"
+            + COLUMN_CONTENIDO+ " varchar(255),"
+            + COLUMN_ENLACE+ " varchar(255),"
+            + COLUMN_IMAGEN+ " varchar(255),"
+            + COLUMN_FECHA+ " varchar(255)"
             +");";
+    private Context context;
 
     public NoticiasSQLHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context=context;
     }
 
     @Override

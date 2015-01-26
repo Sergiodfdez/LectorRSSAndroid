@@ -35,7 +35,7 @@ public class NoticiasDataSourceImpl implements NoticiasDataSource {
 
 
     @Override
-    public Noticia createNoticia(String titulo,String contenido, String enlace, String imagen, String fecha) {
+    public long createNoticia(String titulo,String contenido, String enlace, String imagen, String fecha) {
         ContentValues values = new ContentValues();
         values.put(NoticiasSQLHelper.COLUMN_TITULO, titulo);
         values.put(NoticiasSQLHelper.COLUMN_CONTENIDO, contenido);
@@ -43,16 +43,39 @@ public class NoticiasDataSourceImpl implements NoticiasDataSource {
         values.put(NoticiasSQLHelper.COLUMN_IMAGEN, imagen);
         values.put(NoticiasSQLHelper.COLUMN_FECHA, fecha);
         //TODO: Problemas
-        long insertId = database.insert(NoticiasSQLHelper.TABLE_NOTICIAS, null,values);
 
+        database=dbHelper.getWritableDatabase();
+        long insertId = database.insert(NoticiasSQLHelper.TABLE_NOTICIAS, null,values);
+        System.out.println(insertId);
         Cursor cursor = database.query(NoticiasSQLHelper.TABLE_NOTICIAS,
                 allColumns, NoticiasSQLHelper.COLUMN_ID + " = " + insertId, null,
                 null, null, null);
         cursor.moveToFirst();
         Noticia newNoticia = cursorToNoticia(cursor);
         cursor.close();
-        return newNoticia;
+        return insertId;
     }
+
+    @Override
+    public List<Noticia> getAllSQLNoticias(){
+        List<Noticia> noticias=new ArrayList<Noticia>();
+        database= dbHelper.getWritableDatabase();
+        Cursor cursor=database.query(NoticiasSQLHelper.TABLE_NOTICIAS,allColumns,null,null,null,null,null);
+        while(cursor.moveToNext()){
+            Noticia noticia = new Noticia();
+//        noticia.setId(cursor.getLong(0));
+            noticia.setTitulo(cursor.getString(1));
+            noticia.setContenido(cursor.getString(2));
+            noticia.setEnlace(cursor.getString(3));
+            noticia.setImagen(cursor.getString(4));
+            noticia.setFecha(cursor.getString(5));
+            noticias.add(noticia);
+        }
+        cursor.close();
+        return noticias;
+
+    }
+
 
     public void deleteNoticia(Noticia noticia) {
         //TODO: Id Necesario

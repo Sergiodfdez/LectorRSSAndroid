@@ -1,7 +1,9 @@
 package com.example.sergio.lectorrss.android.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -27,6 +29,7 @@ public class Activity_Noticias extends Activity implements NoticiasView, View.On
     private NoticiasDataBaseImpl noticiasDataBase= NoticiasDataBaseImpl.getInstance();
     private Noticias_Adapter adapter;
     private NoticiasPresenter noticiasPresenter;
+    private SQLiteDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -36,6 +39,7 @@ public class Activity_Noticias extends Activity implements NoticiasView, View.On
         listView.setOnItemClickListener(this);
         findViewById(R.id.button).setOnClickListener(this);
         noticiasPresenter = new NoticiasPresenterImpl(this);
+
     }
 
     @Override
@@ -53,6 +57,11 @@ public class Activity_Noticias extends Activity implements NoticiasView, View.On
     @Override
     public void showMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public Context getContextHelper() {
+        return this.getApplicationContext();
     }
 
     @Override
