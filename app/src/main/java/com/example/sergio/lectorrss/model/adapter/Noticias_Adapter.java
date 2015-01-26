@@ -1,4 +1,4 @@
-package com.example.sergio.lectorrss.model;
+package com.example.sergio.lectorrss.model.adapter;
 
 import android.content.Context;
 import android.view.View;
@@ -54,8 +54,7 @@ public class Noticias_Adapter extends ArrayAdapter<Object> {
             placeHolder = (PlaceHolder) convertView.getTag();
         }
         placeHolder.title.setText(noticias.get(position).getTitulo());
-        SimpleDateFormat dt = new SimpleDateFormat("yyyyy-mm-dd hh:mm:ss");
-        placeHolder.time.setText(""+dt.format(noticias.get(position).getFecha()));
+        placeHolder.time.setText(noticias.get(position).getFecha());
         placeHolder.content.setText("" + noticias.get(position).getContenido());
         return convertView;
 

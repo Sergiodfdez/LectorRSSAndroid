@@ -5,4 +5,5 @@ package com.example.sergio.lectorrss.android.view;
  */
 public interface NoticiasView {
     public void refreshView();
+    public void showMessage(String message);
 }
