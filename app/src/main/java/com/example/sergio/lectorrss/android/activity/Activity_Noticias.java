@@ -5,15 +5,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.sergio.lectorrss.android.view.NoticiasView;
-import com.example.sergio.lectorrss.java.database.NoticiasDataBaseImpl;
-import com.example.sergio.lectorrss.java.object.Noticia;
+import com.example.sergio.lectorrss.java.object.NoticiaDB;
 import com.example.sergio.lectorrss.model.adapter.Noticias_Adapter;
 import com.example.sergio.lectorrss.R;
 import com.example.sergio.lectorrss.model.presenter.interfaces.NoticiasPresenter;
@@ -26,7 +26,6 @@ import java.util.ArrayList;
  */
 public class Activity_Noticias extends Activity implements NoticiasView, View.OnClickListener, ListView.OnItemClickListener{
     private ListView listView;
-    private NoticiasDataBaseImpl noticiasDataBase= NoticiasDataBaseImpl.getInstance();
     private Noticias_Adapter adapter;
     private NoticiasPresenter noticiasPresenter;
     private SQLiteDatabase db;
@@ -43,14 +42,20 @@ public class Activity_Noticias extends Activity implements NoticiasView, View.On
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
     public void onClick(View v){
         this.noticiasPresenter.clickRefreshButton();
     }
 
     @Override
-    public void refreshView() {
-        ArrayList<Noticia> noticas=noticiasDataBase.getArray_Noticias();
-        adapter = new Noticias_Adapter(this, noticiasDataBase.getArray_Noticias());
+    public void refreshView(ArrayList<NoticiaDB> noticiaDBs) {
+        adapter = new Noticias_Adapter(this, noticiaDBs);
         listView.setAdapter(adapter);
     }
 

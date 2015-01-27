@@ -6,18 +6,19 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.sergio.lectorrss.java.database.interfaces.NoticiasDataSource;
-import com.example.sergio.lectorrss.java.object.Noticia;
+import com.example.sergio.lectorrss.java.object.NoticiaDB;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 /**
  * Created by sergio on 22/01/15.
  */
 public class NoticiasDataSourceImpl implements NoticiasDataSource {
     // Database fields
+    private static NoticiasDataSourceImpl instance = null;
+    private ArrayList<NoticiaDB> noticiasDBs;
+    private Boolean has_update=true;
     private SQLiteDatabase database;
     private NoticiasSQLHelper dbHelper;
     private String[] allColumns = {
@@ -29,7 +30,14 @@ public class NoticiasDataSourceImpl implements NoticiasDataSource {
             NoticiasSQLHelper.COLUMN_FECHA
     };
 
-    public NoticiasDataSourceImpl(Context context) {
+    public static NoticiasDataSourceImpl getInstance(Context context) {
+        if(instance == null) {
+            instance = new NoticiasDataSourceImpl(context);
+        }
+        return instance;
+    }
+
+    private NoticiasDataSourceImpl(Context context) {
         dbHelper = new NoticiasSQLHelper(context);
     }
 
@@ -42,42 +50,33 @@ public class NoticiasDataSourceImpl implements NoticiasDataSource {
         values.put(NoticiasSQLHelper.COLUMN_ENLACE, enlace);
         values.put(NoticiasSQLHelper.COLUMN_IMAGEN, imagen);
         values.put(NoticiasSQLHelper.COLUMN_FECHA, fecha);
-        //TODO: Problemas
 
         database=dbHelper.getWritableDatabase();
         long insertId = database.insert(NoticiasSQLHelper.TABLE_NOTICIAS, null,values);
-        System.out.println(insertId);
-        Cursor cursor = database.query(NoticiasSQLHelper.TABLE_NOTICIAS,
-                allColumns, NoticiasSQLHelper.COLUMN_ID + " = " + insertId, null,
-                null, null, null);
-        cursor.moveToFirst();
-        Noticia newNoticia = cursorToNoticia(cursor);
-        cursor.close();
         return insertId;
     }
 
-    @Override
-    public List<Noticia> getAllSQLNoticias(){
-        List<Noticia> noticias=new ArrayList<Noticia>();
-        database= dbHelper.getWritableDatabase();
-        Cursor cursor=database.query(NoticiasSQLHelper.TABLE_NOTICIAS,allColumns,null,null,null,null,null);
-        while(cursor.moveToNext()){
-            Noticia noticia = new Noticia();
-//        noticia.setId(cursor.getLong(0));
-            noticia.setTitulo(cursor.getString(1));
-            noticia.setContenido(cursor.getString(2));
-            noticia.setEnlace(cursor.getString(3));
-            noticia.setImagen(cursor.getString(4));
-            noticia.setFecha(cursor.getString(5));
-            noticias.add(noticia);
-        }
-        cursor.close();
-        return noticias;
 
+    @Override
+    public long createNoticia(NoticiaDB noticia){
+        ContentValues values = new ContentValues();
+        values.put(NoticiasSQLHelper.COLUMN_TITULO, noticia.getTitulo());
+        values.put(NoticiasSQLHelper.COLUMN_CONTENIDO, noticia.getContenido());
+        values.put(NoticiasSQLHelper.COLUMN_ENLACE, noticia.getEnlace());
+        values.put(NoticiasSQLHelper.COLUMN_IMAGEN, noticia.getImagen());
+        values.put(NoticiasSQLHelper.COLUMN_FECHA, noticia.getFecha());
+
+        database=dbHelper.getWritableDatabase();
+        long insertId = database.insert(NoticiasSQLHelper.TABLE_NOTICIAS, null,values);
+        if(insertId < 0){
+            throw new Error("Error en la base e datos");
+        }else{
+            this.has_update=true;
+        }
+        return insertId;
     }
 
-
-    public void deleteNoticia(Noticia noticia) {
+    public void deleteNoticia(NoticiaDB noticiaDB) {
         //TODO: Id Necesario
 //        long id = noticia.getId();
 //        System.out.println("Noticia deleted with id: " + id);
@@ -86,21 +85,26 @@ public class NoticiasDataSourceImpl implements NoticiasDataSource {
     }
 
     @Override
-    public List<Noticia> getAllNoticias() {
-        List<Noticia> noticias = new ArrayList<Noticia>();
+    public ArrayList<NoticiaDB> getAllNoticias() {
+        if(this.has_update){
+            noticiasDBs = new ArrayList<NoticiaDB>();
+            database=dbHelper.getWritableDatabase();
+            Cursor cursor = database.query(NoticiasSQLHelper.TABLE_NOTICIAS,
+                    allColumns, null, null, null, null, null);
 
-        Cursor cursor = database.query(NoticiasSQLHelper.TABLE_NOTICIAS,
-                allColumns, null, null, null, null, null);
-
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            Noticia noticia = cursorToNoticia(cursor);
-            noticias.add(noticia);
-            cursor.moveToNext();
+            cursor.moveToFirst();
+            int position=0;
+            while (!cursor.isAfterLast()) {
+                NoticiaDB noticiaDB = cursorToNoticia(cursor,position);
+                noticiasDBs.add(noticiaDB);
+                cursor.moveToNext();
+                position++;
+            }
+            // make sure to close the cursor
+            cursor.close();
+            this.has_update=false;
         }
-        // make sure to close the cursor
-        cursor.close();
-        return noticias;
+        return noticiasDBs;
     }
 
     @Override
@@ -113,14 +117,33 @@ public class NoticiasDataSourceImpl implements NoticiasDataSource {
         dbHelper.close();
     }
 
-    private Noticia cursorToNoticia(Cursor cursor) {
-        Noticia noticia = new Noticia();
-//        noticia.setId(cursor.getLong(0));
-        noticia.setTitulo(cursor.getString(1));
-        noticia.setContenido(cursor.getString(2));
-        noticia.setEnlace(cursor.getString(3));
-        noticia.setImagen(cursor.getString(4));
-        noticia.setFecha(cursor.getString(5));
-        return noticia;
+    private NoticiaDB cursorToNoticia(Cursor cursor,int position) {
+        NoticiaDB noticiaDB = new NoticiaDB();
+        noticiaDB.setPosition(position);
+        noticiaDB.setId(cursor.getLong(0));
+        noticiaDB.setTitulo(cursor.getString(1));
+        noticiaDB.setContenido(cursor.getString(2));
+        noticiaDB.setEnlace(cursor.getString(3));
+        noticiaDB.setImagen(cursor.getString(4));
+        noticiaDB.setFecha(cursor.getString(5));
+        return noticiaDB;
     }
+
+    @Override
+    public NoticiaDB getNoticia(int position){
+        if(has_update){
+            this.noticiasDBs=this.getAllNoticias();
+        }
+        NoticiaDB noticiaFound=null;
+        for(NoticiaDB noticia : this.noticiasDBs){
+            if(noticia.getPosition()==position){
+                noticiaFound=noticia;
+                break;
+            }
+        }
+        if(noticiaFound==null){
+            throw new Error("Problema al seleccionar la noticia");
+        }
+        return noticiaFound;
+    };
 }

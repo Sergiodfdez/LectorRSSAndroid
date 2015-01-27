@@ -7,7 +7,6 @@ package com.example.sergio.lectorrss.model.presenter.interfaces;
 public interface NoticiasPresenter {
     public void clickRefreshButton();
     public void onItemClicked(int position);
-   // public void readRSS();
     public void refreshView();
 
 }

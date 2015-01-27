@@ -5,12 +5,30 @@ import java.util.Date;
 /**
  * Created by sergio on 21/01/15.
  */
-public class Noticia {
+public class NoticiaDB {
+    private long id;
     private String titulo;
     private String contenido;
     private String enlace;
     private String imagen;
     private String fecha;
+    private int position;
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getFecha() {
         return fecha;

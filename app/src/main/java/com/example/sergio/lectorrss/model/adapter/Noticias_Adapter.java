@@ -7,9 +7,8 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.example.sergio.lectorrss.R;
-import com.example.sergio.lectorrss.java.object.Noticia;
+import com.example.sergio.lectorrss.java.object.NoticiaDB;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 /**
@@ -17,17 +16,17 @@ import java.util.ArrayList;
  */
 public class Noticias_Adapter extends ArrayAdapter<Object> {
     Context context;
-    private ArrayList<Noticia> noticias;
+    private ArrayList<NoticiaDB> noticiaDBs;
 
-    public Noticias_Adapter(Context context, ArrayList<Noticia> noticias) {
+    public Noticias_Adapter(Context context, ArrayList<NoticiaDB> noticiaDBs) {
         super(context, R.layout.item_noticias);
         this.context=context;
-        this.noticias = noticias;
+        this.noticiaDBs = noticiaDBs;
     }
 
     @Override
     public int getCount(){
-        return noticias.size();
+        return noticiaDBs.size();
     }
 
     private static class PlaceHolder {
@@ -53,9 +52,9 @@ public class Noticias_Adapter extends ArrayAdapter<Object> {
         }else{
             placeHolder = (PlaceHolder) convertView.getTag();
         }
-        placeHolder.title.setText(noticias.get(position).getTitulo());
-        placeHolder.time.setText(noticias.get(position).getFecha());
-        placeHolder.content.setText("" + noticias.get(position).getContenido());
+        placeHolder.title.setText(noticiaDBs.get(position).getTitulo());
+        placeHolder.time.setText(noticiaDBs.get(position).getFecha());
+        placeHolder.content.setText("" + noticiaDBs.get(position).getContenido());
         return convertView;
 
     }

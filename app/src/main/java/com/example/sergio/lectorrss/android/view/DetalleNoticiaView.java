@@ -1,5 +1,6 @@
 package com.example.sergio.lectorrss.android.view;
 
+import android.content.Context;
 import android.media.Image;
 
 /**
@@ -11,4 +12,5 @@ public interface DetalleNoticiaView {
     public void setContenido(String contenido);
     public void setFecha(String fecha);
     public void openBrowser(String url);
+    public Context getContextHelper();
 }

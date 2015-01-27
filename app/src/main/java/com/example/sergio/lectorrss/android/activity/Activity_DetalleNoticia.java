@@ -1,6 +1,7 @@
 package com.example.sergio.lectorrss.android.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -88,4 +89,9 @@ public class Activity_DetalleNoticia extends Activity implements DetalleNoticiaV
 
     }
 
+
+    @Override
+    public Context getContextHelper() {
+        return this.getApplicationContext();
+    }
 }

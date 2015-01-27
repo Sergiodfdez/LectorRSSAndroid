@@ -5,5 +5,4 @@ package com.example.sergio.lectorrss.java.internet.interfaces;
  */
 public interface HTMLXatakaDescriptionParser {
     public String parserImg(String html);
-    public String parserContenido(String html);
 }

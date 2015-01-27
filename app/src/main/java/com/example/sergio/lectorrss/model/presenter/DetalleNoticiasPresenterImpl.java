@@ -1,11 +1,9 @@
 package com.example.sergio.lectorrss.model.presenter;
 
-import android.app.Activity;
-
 import com.example.sergio.lectorrss.android.view.DetalleNoticiaView;
-import com.example.sergio.lectorrss.java.database.interfaces.NoticiasDataBase;
-import com.example.sergio.lectorrss.java.database.NoticiasDataBaseImpl;
-import com.example.sergio.lectorrss.java.object.Noticia;
+import com.example.sergio.lectorrss.java.database.NoticiasDataSourceImpl;
+import com.example.sergio.lectorrss.java.database.interfaces.NoticiasDataSource;
+import com.example.sergio.lectorrss.java.object.NoticiaDB;
 import com.example.sergio.lectorrss.model.presenter.interfaces.DetalleNoticiasPresenter;
 
 /**
@@ -13,16 +11,17 @@ import com.example.sergio.lectorrss.model.presenter.interfaces.DetalleNoticiasPr
  */
 public class DetalleNoticiasPresenterImpl implements DetalleNoticiasPresenter {
     DetalleNoticiaView detalleNoticiaView;
-    Noticia noticia;
-    NoticiasDataBase noticiasDataBase= NoticiasDataBaseImpl.getInstance();
+    NoticiasDataSource noticiasDataSource;
+    NoticiaDB noticiaDB;
 
     public DetalleNoticiasPresenterImpl(DetalleNoticiaView detalleNoticiaView,int position) {
         this.detalleNoticiaView=detalleNoticiaView;
-        noticia=noticiasDataBase.getNoticia(position);
-        setImagen(noticia.getImagen());
-        setTitulo(noticia.getTitulo());
-        setContenido(noticia.getContenido());
-        setFecha(noticia.getFecha().toString());
+        noticiasDataSource= NoticiasDataSourceImpl.getInstance(this.detalleNoticiaView.getContextHelper());
+        noticiaDB =noticiasDataSource.getNoticia(position);
+        setImagen(noticiaDB.getImagen());
+        setTitulo(noticiaDB.getTitulo());
+        setContenido(noticiaDB.getContenido());
+        setFecha(noticiaDB.getFecha().toString());
     }
 
     @Override
@@ -47,6 +46,6 @@ public class DetalleNoticiasPresenterImpl implements DetalleNoticiasPresenter {
 
     @Override
     public void onClickNavigator() {
-        detalleNoticiaView.openBrowser(noticia.getEnlace());
+        detalleNoticiaView.openBrowser(noticiaDB.getEnlace());
     }
 }

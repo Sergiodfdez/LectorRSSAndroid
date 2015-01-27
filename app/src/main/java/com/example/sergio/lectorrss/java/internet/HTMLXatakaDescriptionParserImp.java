@@ -25,9 +25,4 @@ public class HTMLXatakaDescriptionParserImp implements HTMLXatakaDescriptionPars
         return attr.get("src");
 
     }
-
-    @Override
-    public String parserContenido(String html) {
-        return null;
-    }
 }

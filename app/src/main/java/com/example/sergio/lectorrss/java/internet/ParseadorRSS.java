@@ -4,10 +4,8 @@ package com.example.sergio.lectorrss.java.internet;
  * Created by sergio on 22/01/15.
  */
 
-import android.util.Log;
-
 import com.example.sergio.lectorrss.java.internet.interfaces.HTMLXatakaDescriptionParser;
-import com.example.sergio.lectorrss.java.object.Noticia;
+import com.example.sergio.lectorrss.java.object.NoticiaDB;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -27,8 +25,8 @@ import javax.xml.parsers.ParserConfigurationException;
 public class ParseadorRSS {
     URL feedXML;
     HTMLXatakaDescriptionParser parserHTML= new HTMLXatakaDescriptionParserImp();
-    ArrayList<Noticia> noticias = new ArrayList<Noticia>();
-    Noticia noticia;
+    ArrayList<NoticiaDB> noticiaDBs = new ArrayList<NoticiaDB>();
+    NoticiaDB noticiaDB;
     public ParseadorRSS(String feedXML) {
         //TODO Don't work corretly
         try {
@@ -44,31 +42,28 @@ public class ParseadorRSS {
             for (int i = 0; i < nodeList.getLength(); i++) {
                 Node node = nodeList.item(i);
                 NodeList elements=  node.getChildNodes();
-                noticia=new Noticia();
+                noticiaDB =new NoticiaDB();
                 for (int j=0; j<elements.getLength();j++){
                     Node aux= elements.item(j);
                     switch(aux.getNodeName()){
                         case "title":
-                            //Log.i("RESULTADO title",aux.getTextContent());
-                            noticia.setTitulo(aux.getTextContent());
+                            noticiaDB.setTitulo(aux.getTextContent());
                             break;
                         case "link":
-                            noticia.setEnlace(aux.getTextContent());
-                           // Log.i("RESULTADO link",aux.getTextContent());
+                            noticiaDB.setEnlace(aux.getTextContent());
                             break;
                         case "pubDate":
-                            noticia.setFecha(aux.getTextContent());
-                            //Log.i("RESULTADO pubDate",aux.getTextContent());
+                            noticiaDB.setFecha(aux.getTextContent());
                             break;
                         case "description":
-                            //Log.i("RESULTADO description",aux.getTextContent());
                             String img_src = parserHTML.parserImg(aux.getTextContent());
-                            noticia.setImagen(img_src);
-                            noticia.setContenido("blalalalalalala");
+                            noticiaDB.setImagen(img_src);
+                            noticiaDB.setContenido("Resumen pequeño de la noticia");
+                            //noticiaDB.setContenido(aux.getTextContent());
                             break;
                     }
                 }
-            noticias.add(noticia);
+            noticiaDBs.add(noticiaDB);
             }
 
         } catch (ParserConfigurationException e) {
@@ -82,8 +77,8 @@ public class ParseadorRSS {
 
     }
 
-    public ArrayList<Noticia> getNoticias(){
-        return this.noticias;
+    public ArrayList<NoticiaDB> getNoticiaDBs(){
+        return this.noticiaDBs;
     }
 
 }
